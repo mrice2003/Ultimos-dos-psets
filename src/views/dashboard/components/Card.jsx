@@ -1,6 +1,14 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom";
+
 
 const Card = ({ user }) => {
+
+ const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/users/${user.id}`);
+  };
+
   return (
     <div
       style={{
@@ -11,9 +19,14 @@ const Card = ({ user }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        cursor: 'pointer',
       }}
+      onClick={handleClick}
     >
-      <div>{user.name}{user.email}</div>
+      <div>
+        {user.name}
+        {user.email}
+      </div>
     </div>
   );
 };

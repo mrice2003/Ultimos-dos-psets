@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from './components/Card';
+// import CardDemo from './components/CardDemo';
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -13,9 +14,9 @@ const Dashboard = () => {
     fetchUsers();
   }, []);
   return (
-    <div>
+    <div style={{display:"flex", flexDirection:'column'}}>
       {users.map((user) => (
-        <div key={user.id}>
+        <div key={user.id} style={{ padding: '1%' }}>
           <Card user={user} />
         </div>
       ))}

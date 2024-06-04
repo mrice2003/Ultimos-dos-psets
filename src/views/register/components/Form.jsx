@@ -4,6 +4,7 @@ const Form = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
+    age: ''
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,17 +56,26 @@ const Form = () => {
           value={form.email}
           onChange={handleChange}
         />
+        <p>Edad</p>
+        <input
+          style={{ height: '45px', width:'60%', paddingLeft: '5px', borderRadius: '5px', border: '1px solid #399C7E'}}
+          type="age"
+          name="age"
+          placeholder="Age"
+          value={form.age}
+          onChange={handleChange}
+        />
         <div style={{ paddingTop: '5%' }}>
           <button
             onClick={handleSubmitForm}
             style={{
               height: '50px',
-              width: '140px',
+              width: '200px',
               backgroundColor: '#399C7E',
               border: 'none',
               color: 'white',
               cursor: 'pointer',
-              fontSize: '15px',
+              fontSize: '12px',
               fontWeight: 'bold',
               textAlign: 'center',
               borderRadius: '5px',

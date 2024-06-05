@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-// import user from '../../assets/user.svg';
 import PrevDescription from './components/PrevDescription';
 import CardInfo from './components/CardInfo';
+import NavigationBar from '../../shared/NavigationBar';  // Importar NavigationBar
 
 const Users = () => {
   const { id } = useParams();
@@ -47,7 +46,7 @@ const Users = () => {
     };
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/chat', {
+      const response = await fetch('http://localhost:3000/chat/gemini', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,53 +66,57 @@ const Users = () => {
   useEffect(() => {
     fetchUserById();
     fetchDescription();
-  }, []);
+  }, [id]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div>
-        <CardInfo user={user} />
-      </div>
-      <div>
-        <PrevDescription descriptions={descriptions} />
-      </div>
-      <div>
-        <p>Descripcion</p>
-        <textarea
-          label="Descripcion"
-          value={form.description}
-          name="description"
-          onChange={handleInputChange}
-        />
-        <p>Preescricion</p>
-        <textarea
-          label="Prescription"
-          value={form.prescription}
-          name="prescription"
-          onChange={handleInputChange}
-        />
-        <div>
-          <button
-            style={{
-              height: '50px',
-              width: '180px',
-              backgroundColor: '#399C7E',
-              border: 'none',
-              color: 'white',
-              cursor: 'pointer',
-              fontSize: '10px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              borderRadius: '5px',
-            }}
-            disabled={isLoading}
-            onClick={handleGenerateHelp}
-          >
-            <p>{isLoading ? 'Cargando' : 'Generar Ejercicio'}</p>
-          </button>
+    <NavigationBar>
+      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div>
+            <CardInfo user={user} />
+          </div>
+          <div>
+            <PrevDescription descriptions={descriptions} />
+          </div>
+          <div>
+            <p>Description</p>
+            <textarea
+              label="Descripcion"
+              value={form.description}
+              name="description"
+              onChange={handleInputChange}
+            />
+            <p>Preescricion</p>
+            <textarea
+              label="Prescription"
+              value={form.prescription}
+              name="prescription"
+              onChange={handleInputChange}
+            />
+            <div>
+              <button
+                style={{
+                  height: '50px',
+                  width: '180px',
+                  backgroundColor: '#399C7E',
+                  border: 'none',
+                  color: 'white',
+                  cursor: 'pointer',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  borderRadius: '5px',
+                }}
+                disabled={isLoading}
+                onClick={handleGenerateHelp}
+              >
+                <p>{isLoading ? 'Cargando' : 'Generar Ejercicio'}</p>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </NavigationBar>
   );
 };
 

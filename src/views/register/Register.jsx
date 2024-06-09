@@ -1,5 +1,7 @@
+// Register.jsx
 import Form from './components/Form';
 import form from '../../assets/form.svg';
+
 const Register = () => {
   return (
     <div

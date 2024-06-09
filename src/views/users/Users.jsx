@@ -1,41 +1,48 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PrevDescription from './components/PrevDescription';
 import CardInfo from './components/CardInfo';
-import NavigationBar from '../../shared/NavigationBar';  // Importar NavigationBar
 
 const Users = () => {
   const { id } = useParams();
+  const idAsNumber = parseInt(id);
 
   const [form, setForm] = useState({
     description: '',
     prescription: '',
+    user_id: idAsNumber,
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
   const [user, setUser] = useState([]);
+  const [expandedCard, setExpandedCard] = useState(null); // State to track expanded card
 
   const fetchDescription = async () => {
     const response = await fetch('http://localhost:3000/description/' + id);
     const data = await response.json();
-    setDescriptions(data);
+    setDescriptions(data.reverse()); // Reverse the array to show newest first
     return data;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const newForm = {
+    let newForm = {
       ...form,
       [name]: value,
     };
+    if (name === 'description' && value === '') {
+      newForm = {
+        ...newForm,
+        prescription: '',
+      };
+    }
     setForm(newForm);
   };
 
   const fetchUserById = async () => {
     const response = await fetch('http://localhost:3000/users/' + id);
     const data = await response.json();
-    console.log(data);
     setUser(data);
     return data;
   };
@@ -55,12 +62,12 @@ const Users = () => {
       });
       const data = await response.json();
       setForm({ ...form, prescription: data.response });
-      console.log(data);
+      setIsLoading(false);
       return data;
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -68,32 +75,67 @@ const Users = () => {
     fetchDescription();
   }, [id]);
 
+  const createDescription = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/description/' + id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (response.status === 201) {
+        alert('Descripción creada');
+        fetchDescription();
+        setForm({ ...form, description: '', prescription: '' });
+      } else {
+        alert('Error al crear descripción');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Función para manejar la expansión de la tarjeta
+  const handleCardClick = (index) => {
+    if (index === expandedCard) {
+      setExpandedCard(null); // Si la tarjeta ya está expandida, la contraemos
+    } else {
+      setExpandedCard(index); // Si no, la expandimos
+    }
+  };
+
   return (
-    <NavigationBar>
-      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div>
-            <CardInfo user={user} />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <div style={{ marginRight: '20px' }}>
+          <CardInfo user={user} />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ width: '100%' }}>
+            <PrevDescription
+              descriptions={descriptions}
+              expandedCard={expandedCard}
+              onCardClick={handleCardClick}
+            />
           </div>
-          <div>
-            <PrevDescription descriptions={descriptions} />
-          </div>
-          <div>
-            <p>Description</p>
+          <div style={{ marginTop: '20px', width: '100%' }}>
+            <p style={{ fontWeight: 'bold' }}>Descripción</p>
             <textarea
-              label="Descripcion"
+              style={{ width: '100%', minHeight: '80px' }}
+              label="Descripción"
               value={form.description}
               name="description"
               onChange={handleInputChange}
             />
-            <p>Preescricion</p>
+            <p>Prescripción</p>
             <textarea
-              label="Prescription"
+              style={{ width: '100%', minHeight: '80px' }}
+              label="Prescripción"
               value={form.prescription}
               name="prescription"
               onChange={handleInputChange}
             />
-            <div>
+            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
               <button
                 style={{
                   height: '50px',
@@ -106,17 +148,32 @@ const Users = () => {
                   fontWeight: 'bold',
                   textAlign: 'center',
                   borderRadius: '5px',
+                  marginRight: '10px',
                 }}
                 disabled={isLoading}
                 onClick={handleGenerateHelp}
               >
                 <p>{isLoading ? 'Cargando' : 'Generar Ejercicio'}</p>
               </button>
+              <button 
+                style={{
+                  height: '35px',
+                  width: '120px',
+                  backgroundColor: 'blue',
+                  color: 'white',
+                  borderRadius: '5px',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+                onClick={createDescription} 
+              >
+                <p>Subir</p>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </NavigationBar>
+    </div>
   );
 };
 

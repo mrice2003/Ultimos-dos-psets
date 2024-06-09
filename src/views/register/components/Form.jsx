@@ -4,8 +4,13 @@ const Form = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    age: ''
+    age: '',
+    height: '',
+    weight: '',
+    dentist_time: '',
+    address: ''
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const newForm = {
@@ -59,10 +64,46 @@ const Form = () => {
         <p>Edad</p>
         <input
           style={{ height: '45px', width:'60%', paddingLeft: '5px', borderRadius: '5px', border: '1px solid #399C7E'}}
-          type="age"
+          type="number"
           name="age"
-          placeholder="Age"
+          placeholder="Edad"
           value={form.age}
+          onChange={handleChange}
+        />
+        <p>Altura</p>
+        <input
+          style={{ height: '45px', width:'60%', paddingLeft: '5px', borderRadius: '5px', border: '1px solid #399C7E'}}
+          type="text"
+          name="height"
+          placeholder="Altura"
+          value={form.height}
+          onChange={handleChange}
+        />
+        <p>Peso</p>
+        <input
+          style={{ height: '45px', width:'60%', paddingLeft: '5px', borderRadius: '5px', border: '1px solid #399C7E'}}
+          type="text"
+          name="weight"
+          placeholder="Peso"
+          value={form.weight}
+          onChange={handleChange}
+        />
+        <p>Tiempo con el doctor</p>
+        <input
+          style={{ height: '45px', width:'60%', paddingLeft: '5px', borderRadius: '5px', border: '1px solid #399C7E'}}
+          type="text"
+          name="dentist_time"
+          placeholder="Tiempo con el dentista"
+          value={form.dentist_time}
+          onChange={handleChange}
+        />
+        <p>Domicilio</p>
+        <input
+          style={{ height: '45px', width:'60%', paddingLeft: '5px', borderRadius: '5px', border: '1px solid #399C7E'}}
+          type="text"
+          name="address"
+          placeholder="Domicilio"
+          value={form.address}
           onChange={handleChange}
         />
         <div style={{ paddingTop: '5%' }}>

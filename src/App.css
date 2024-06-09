@@ -1,0 +1,12 @@
+/* En tu archivo CSS o en línea dentro del componente si prefieres */
+.container {
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-top: 20px;
+}
+
+.card {
+  display: inline-block;
+  margin-right: 20px;
+  /* Estilos adicionales de las tarjetas si los necesitas */
+}

@@ -1,33 +1,23 @@
+import React from 'react';
 import { IoHomeOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
-const NavigationBar = ({ children, setSearchTerm }) => {
+const NavigationBar = () => {
   const navigate = useNavigate();
 
   const handleNavigate = (route) => {
-    if (route === 'dashboard') {
-      if (setSearchTerm) {
-        setSearchTerm(''); // Reseteamos el término de búsqueda al navegar al dashboard
-      }
-      navigate('/');
-    }
+    navigate(route);
   };
 
   return (
-    <div style={{ width: '100%', height: '40px', boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1)' }}>
-      <div style={{ display: 'flex' }}>
-        <div onClick={() => handleNavigate("dashboard")} style={{ display: 'flex', cursor: "pointer" }}>
-          <IoHomeOutline />
-          <p>Dashboard</p>
-        </div>
-        <p>Registro</p>
-        <input
-          style={{ border: "2px black solid", width: "180px", height: '25px', borderRadius: '10px' }}
-          type="text"
-          placeholder="Filtrar por nombre"
-          onChange={(e) => setSearchTerm && setSearchTerm(e.target.value)} // Solo llamar setSearchTerm si está definido
-        />
-        {children}
+    <div style={{ width: '100%', height: '40px', boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', padding: '0 20px' }}>
+      <div onClick={() => handleNavigate("/")} style={{ display: 'flex', alignItems: 'center', cursor: "pointer", marginRight: '20px' }}>
+        <IoHomeOutline />
+        <p style={{ marginLeft: '5px' }}>Dashboard</p>
+      </div>
+      <div onClick={() => handleNavigate("/register")} style={{ display: 'flex', alignItems: 'center', cursor: "pointer", marginRight: '20px' }}>
+        <IoHomeOutline />
+        <p style={{ marginLeft: '5px' }}>Registro</p>
       </div>
     </div>
   );
